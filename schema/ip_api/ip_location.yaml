@@ -1,0 +1,32 @@
+ip_location:
+  descr: ip_location for location addition to fact web activity
+  fields:
+  - name: ip_id
+    type: text
+  - name: message
+    type: text
+  - name: country
+    type: text
+  - name: countryCode
+    type: text
+  - name: region
+    type: text
+  - name: regionName
+    type: text
+  - name: city
+    type: text
+  - name: zip
+    type: text
+  - name: lat
+    type: text
+  - name: lon
+    type: text
+  - name: timezone
+    type: text
+  - name: isp
+    type: text
+  - name: org
+    type: text
+  - name: as_number
+    type: text
+  pk: [ip_id]

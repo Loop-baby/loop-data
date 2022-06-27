@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: _duplicates
+    config:
+      quote_columns: true
+      column_types:
+        src_id: VARCHAR
+        email: VARCHAR
+        email_key: VARCHAR
+        member_id: VARCHAR
+        src: VARCHAR
