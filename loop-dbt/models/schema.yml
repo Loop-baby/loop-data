@@ -1,0 +1,191 @@
+version: 2
+
+models:
+  - name: dim_ad
+    columns:
+      - name: ad_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_campaign
+    columns:
+      - name: campaign_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_channel
+    columns:
+      - name: channel_source_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    columns:
+      - name: datekey
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+## needs surrogate primary key consider sku, bin, purchase_date still has dups (bin sometimes blank) '6650336575659', '6650337886379', '7243629232299'
+#  - name: dim_item
+#    columns:
+#      - name: primary
+#        description: Primary key for this table
+#        tests:
+#          - unique
+#          - not_null
+
+  - name: dim_member_dev
+    columns:
+      - name: member_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_members
+    columns:
+      - name: member_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_membership
+    columns:
+      - name: member_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_product
+    columns:
+      - name: sku
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_ad_performance
+    columns:
+      - name: ad_performance_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+## needs surrogate key consider bin-date still duplicates because there are blank bin values
+#  - name: fact_daily_depreciation
+#    columns:
+#      - name: bin
+#        description: Primary key for this table
+#        tests:
+#          - unique
+#          - not_null
+
+## Needs surrogate key consider member_id-sku-date # needs cleanup even with those there are duplicates
+#  - name: fact_daily_revenue
+#    columns:
+#      - name: primary
+#        description: Primary key for this table
+#        tests:
+#          - unique
+#          - not_null
+
+  - name: fact_line_item
+    columns:
+      - name: line_item_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+## needs surrogate key consider member_id, order_id, sku, bin (possibly delivery_date)
+#  - name: fact_loop
+#    columns:
+#      - name: primary
+#        description: Primary key for this table
+#        tests:
+#          - unique
+#          - not_null
+
+  - name: fact_message_clicked
+    columns:
+      - name: event_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_message_delivered
+    columns:
+      - name: event_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_message_opened
+    columns:
+      - name: event_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_order
+    columns:
+      - name: order_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_refund
+    columns:
+      - name: refund_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_refund_line_item
+    columns:
+      - name: refund_line_item_id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+## Needs surrogate key consider line_item_id, transaction_ts (or sales_type but that still has a dupe)
+#  - name: fact_transaction
+#    columns:
+#      - name:
+#        description: Primary key for this table
+#        tests:
+#          - unique
+#          - not_null
+
+  - name: fact_web_activity
+    columns:
+      - name: id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null
+
+  - name: sessioned_events
+    columns:
+      - name: id
+        description: Primary key for this table
+        tests:
+          - unique
+          - not_null

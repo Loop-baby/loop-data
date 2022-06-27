@@ -1,0 +1,1 @@
+select * from shopify.orders where updated_at > '{{last_modified_at}}'

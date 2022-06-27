@@ -1,0 +1,229 @@
+version: 2
+
+sources:
+  - name: klaviyo
+    tables:
+      - name: email_link_clicked
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: email_delivered
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: email_opened
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+  - name: bold
+    tables:
+      - name: subscriptions
+      - name: line_items
+      - name: customers
+  - name: googlesheets
+    description: spreadsheets ftw
+    tables:
+      - name: inventory_reporting_base
+      - name: loop_master
+      - name: purchase_master
+      - name: nyc_loop_master
+      - name: nyc_purchase_master
+      - name: fb_ad_key
+      - name: loop_daily_targets
+      - name: loop_pdp_rewrite_tracker
+  - name: shopify
+    description: Selling things on the internet
+    tables:
+      - name: orders
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: customers
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: products
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: variants
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: line_items
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+  - name: hubspot
+    description: CRM to the stars
+    tables:
+      - name: contacts
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: deals
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+  - name: facebook_ads
+    description: Facebook Ads to the stars
+    tables:
+      - name: campaigns
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: insights
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: ads
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+  - name: google_ads
+    description: google ads to the stars
+    tables:
+      - name: campaigns
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: ad_performance_reports
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: ads
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: ad_groups
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: click_performance_reports
+        columns:
+          - name: id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+  - name: ip_api
+    description: holds IP geo location information
+    tables:
+      - name: ip_location
+  - name: quickbase
+    description: Tables integrated from quickbase
+    tables:
+      - name: order_lines
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: pick_deliveries
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: customers
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: schedule_delivery
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: schedule_pickup
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: inventory
+        columns:
+          - name: quickbase_asset_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: associate_asset_tag
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: sell_asset
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
+      - name: scrap_asset
+        columns:
+          - name: record_id
+            description: Primary key of the  table
+            tests:
+              - unique
+              - not_null
