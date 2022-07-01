@@ -227,3 +227,34 @@ sources:
             tests:
               - unique
               - not_null
+  - name: shopify_littledata_prod
+    description: holds segment data from shopify
+    tables:
+      - name: add_to_registry_product_added
+  - name: bigcommerce
+    description: holds bigcommerce data
+    tables:
+      - name: customers
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null
+      - name: orders
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null
+      - name: products
+        columns:
+        - name: id
+          tests:
+            - unique
+            - not_null
+      - name: refunds
+        columns:
+        - name: id
+          tests:
+            - unique
+            - not_null        
