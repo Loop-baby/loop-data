@@ -29,7 +29,8 @@ class BigCommerce:
             "customers": f'https://api.bigcommerce.com/stores/{self.store_hash}/v3/customers', 
             "orders": f'https://api.bigcommerce.com/stores/{self.store_hash}/v2/orders',
             "products": f'https://api.bigcommerce.com/stores/{self.store_hash}/v3/catalog/products',
-            "refunds": f'https://api.bigcommerce.com/stores/{self.store_hash}/v3/orders/payment_actions/refunds'
+            "refunds": f'https://api.bigcommerce.com/stores/{self.store_hash}/v3/orders/payment_actions/refunds',
+            "line_items": f'https://api.bigcommerce.com/stores/{self.store_hash}/v2/orders/order_id_here/products'
         }
 
     def check_limits(self, response):
@@ -58,7 +59,7 @@ class BigCommerce:
         while len(data) == 50:
             new_min_date_modified = max(parsedate_to_datetime(i["date_modified"] for i in data))
             params = {
-            "min_date_modified": format_datetime(new_min_date_modified)
+                "min_date_modified": format_datetime(new_min_date_modified)
             }
 
             response = rq.get(url, headers=self.headers, params=params)
@@ -70,6 +71,28 @@ class BigCommerce:
         all_data = [item for sublist in all_data for item in sublist]
 
         return all_data  
+
+
+    def get_line_items(self, table, order_data):
+        """
+        Orders does not contain line items and there is not a way to pull them all at once so this needs to be called
+        for each new order to get the line items
+        """
+
+        all_data = []
+        order_ids = [val[0] for val in order_data]
+
+        for order_id in order_ids:
+            url = self.urls[table].replace('order_id_here', order_id)
+            response = rq.get(url, headers=self.headers)
+            response.raise_for_status()
+            self.check_limits(response)
+            data = response.json()
+            all_data.append(data)
+        
+        all_data = [item for sublist in all_data for item in sublist]
+
+        return all_data
 
 
     def get_data(self, table, filter_ms, audit_col):
@@ -138,9 +161,10 @@ class RedshiftBigcommerceSyncer:
 
     def sync(self):
         for table in self.tables:
-            self.sync_table(table)
+            if table != 'line_items':
+                self.sync_table(table)
 
-    def sync_table(self, table_name, init=False):
+    def sync_table(self, table_name, dependent_data=None, init=False):
         self.redshift.createTable(self.schema, table_name)        
         if init:
             self.redshift.truncate(self.schema, table_name)
@@ -150,11 +174,16 @@ class RedshiftBigcommerceSyncer:
 
         filter_ms, audit_col = self.get_last_ts(table_name)
 
+
         if table_name == 'orders':
             data = self.bigcommerce.get_orders(table_name, filter_ms)
-
+            dependent_tables = {'line_items'}
+        elif table_name == 'line_items':
+            data = self.bigcommerce.get_line_items(table_name, filter_ms)
+            dependent_table = {}
         else:
             data = self.bigcommerce.get_data(table_name, filter_ms, audit_col)
+            dependent_table = {}
 
         clean_data = [{k: v for k, v in row.items() if k in field_names} for row in data]
 
@@ -162,6 +191,11 @@ class RedshiftBigcommerceSyncer:
 
         s3_url = 's3://' + self.s3.bucket + '/' + s3_path
         self.redshift.upsertFromS3(self.schema, table_name, s3_url)
+
+        for dependent_table in dependent_tables:
+            self.sync_table(table_name, dependent_data=clean_data)
+
+
 
 
 if __name__ == '__main__':
