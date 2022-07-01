@@ -15,7 +15,7 @@ with registry_base_info as (
 		    		'[', ''), 
 	    		']', ''), 
     		'value','registrantId') as recipient_id
-    from shopify.line_items li
+    from {{ source('shopify', 'line_items') }} li
     where fulfillment_service = 'registry')
 
 select rbi.line_item_id,
@@ -30,6 +30,6 @@ select rbi.line_item_id,
     rc.email as recipient_email,
     rbi.recipient_id as recipient_shopify_id
 from registry_base_info rbi inner join
-    shopify.orders o on rbi.order_id = o.id left join
-    shopify.customers c on json_extract_path_text(o.customer, 'id') = c.id left join
-    shopify.customers rc on rbi.recipient_id = rc.id
+    {{ source('shopify', 'orders') }} o on rbi.order_id = o.id left join
+    {{ source('shopify', 'customers') }} c on json_extract_path_text(o.customer, 'id') = c.id left join
+    {{ source('shopify', 'customers') }} rc on rbi.recipient_id = rc.id
