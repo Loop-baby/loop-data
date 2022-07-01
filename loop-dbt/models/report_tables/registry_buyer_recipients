@@ -1,0 +1,35 @@
+with registry_base_info as (
+    select id as line_item_id,
+	    order_id,
+	    price,
+	    product_id,
+	    variant_id,
+	    json_extract_path_text(
+		    	replace(
+			    	replace(
+				    	replace(
+					    	replace(
+						    	replace(properties, '\\', ''), 
+				    		'"{"', '{"'),
+			    		'}"}', '}}'), 
+		    		'[', ''), 
+	    		']', ''), 
+    		'value','registrantId') as recipient_id
+    from shopify.line_items li
+    where fulfillment_service = 'registry')
+
+select rbi.line_item_id,
+	rbi.order_id,
+	rbi.price,
+    rbi.product_id,
+    rbi.variant_id,
+    md5(lower(trim(c.email))) as customer_member_id,
+    c.email as customer_email,
+    json_extract_path_text(o.customer, 'id') as customer_shopify_id,
+    md5(lower(trim(rc.email))) as recipient_member_id,
+    rc.email as recipient_email,
+    rbi.recipient_id as recipient_shopify_id
+from registry_base_info rbi inner join
+    shopify.orders o on rbi.order_id = o.id left join
+    shopify.customers c on json_extract_path_text(o.customer, 'id') = c.id left join
+    shopify.customers rc on rbi.recipient_id = rc.id
