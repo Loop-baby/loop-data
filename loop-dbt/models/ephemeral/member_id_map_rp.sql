@@ -51,7 +51,7 @@ With segment_source as (
 )
 
 SELECT
-	src_id
+	src_id::text
 	, src
 	, email_key 
 	, member_id 
@@ -61,7 +61,7 @@ where rn = 1
 UNION ALL
 
 select
-    id as src_id
+    id::text as src_id
     , 'shopify' as src
     , md5(lower(trim(customers.email))) as email_key
     , coalesce(_duplicates.member_id, md5(lower(trim(customers.email)))) as member_id
@@ -72,7 +72,7 @@ from shopify.customers
 union all
 
 select
-    id as src_id
+    id::text as src_id
     , 'hubspot' as src
     , md5(lower(trim(contacts.email))) as email_key
     , coalesce(_duplicates.member_id, md5(lower(trim(contacts.email)))) as member_id
@@ -83,7 +83,7 @@ from hubspot.contacts
 union all
 
 select
-    id as src_id
+    id::text as src_id
     , 'bigcommerce' as src
     , md5(lower(trim(customers.email))) as email_key
     , coalesce(_duplicates.member_id, md5(lower(trim(customers.email)))) as member_id
@@ -94,7 +94,7 @@ from bigcommerce.customers
 union all
 
 select
-    id as src_id
+    id::text as src_id
     , 'stripe' as src
     , md5(lower(trim(customers.email))) as email_key
     , coalesce(_duplicates.member_id, md5(lower(trim(customers.email)))) as member_id

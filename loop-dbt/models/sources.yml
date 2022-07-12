@@ -257,4 +257,61 @@ sources:
         - name: id
           tests:
             - unique
-            - not_null        
+            - not_null  
+      - name: line_items
+        columns:
+        - name: id
+          tests:
+            - unique
+            - not_null   
+  - name: stripe
+    description: holds stripe data payment and subscription data
+    tables:
+      - name: customers
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null      
+      - name: subscriptions
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null 
+      - name: invoices
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null 
+      - name: invoice_items
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null 
+      - name: invoice_lines
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null 
+      - name: charges
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null       
+      - name: refunds
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null 
+      - name: products
+        columns: 
+        - name: id
+          tests:
+            - unique
+            - not_null 
