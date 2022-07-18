@@ -30,7 +30,8 @@ class BigCommerce:
             "orders": f'https://api.bigcommerce.com/stores/{self.store_hash}/v2/orders',
             "products": f'https://api.bigcommerce.com/stores/{self.store_hash}/v3/catalog/products',
             "refunds": f'https://api.bigcommerce.com/stores/{self.store_hash}/v3/orders/payment_actions/refunds',
-            "line_items": f'https://api.bigcommerce.com/stores/{self.store_hash}/v2/orders/order_id_here/products'
+            "line_items": f'https://api.bigcommerce.com/stores/{self.store_hash}/v2/orders/order_id_here/products',
+            "shipping_addresses": f'https://api.bigcommerce.com/stores{store_hash}/v2/orders/order_id_here/shipping_addresses'
         }
 
     def check_limits(self, response):
@@ -73,10 +74,10 @@ class BigCommerce:
         return all_data  
 
 
-    def get_line_items(self, table, order_data):
+    def get_dependent_data(self, table, order_data):
         """
-        Orders does not contain line items and there is not a way to pull them all at once so this needs to be called
-        for each new order to get the line items
+        Orders does not contain line items or shipping addresses and there is not a way to pull them all at once so this needs to be called
+        for each new order to get the line items and shipping addresses
         """
 
         all_data = []
@@ -177,9 +178,9 @@ class RedshiftBigcommerceSyncer:
 
         if table_name == 'orders':
             data = self.bigcommerce.get_orders(table_name, filter_ms)
-            dependent_tables = {'line_items'}
-        elif table_name == 'line_items':
-            data = self.bigcommerce.get_line_items(table_name, filter_ms)
+            dependent_tables = {'line_items', 'shipping_addresses'}
+        elif table_name in ('line_items', 'shipping_addresses'):
+            data = self.bigcommerce.get_dependent_data(table_name, filter_ms)
             dependent_table = {}
         else:
             data = self.bigcommerce.get_data(table_name, filter_ms, audit_col)
@@ -192,11 +193,12 @@ class RedshiftBigcommerceSyncer:
         s3_url = 's3://' + self.s3.bucket + '/' + s3_path
         self.redshift.upsertFromS3(self.schema, table_name, s3_url)
 
+        if dependent_tables != {}:
+            call_dependent_tables(dependent_tables, clean_data)
+
+    def call_dependent_tables(self, dependent_tables, clean_data):
         for dependent_table in dependent_tables:
-            self.sync_table(table_name, dependent_data=clean_data)
-
-
-
+            self.sync_table(dependent_table, dependent_data=clean_data)
 
 if __name__ == '__main__':
     TARGET_SCHEMA = 'bigcommerce'
