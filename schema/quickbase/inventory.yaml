@@ -72,3 +72,19 @@ inventory:
     type: text
   - name: repair_elaboration_from_qa
     type: text
+  - name: price_paid_variance
+    type: numeric
+  - name: total_cost_including_store_credit
+    type: numeric
+  - name: pretax_price_net_of_discount
+    type: numeric
+  - name: oem__of_retail_price
+    type: numeric
+  - name: store_credit_issued
+    type: numeric
+  - name: oem_discount_flatno_discountqty_tiering
+    type: text
+  - name: oem_vendor_name
+    type: text
+  - name: order_
+    type: text
