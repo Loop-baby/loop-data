@@ -379,3 +379,4 @@ contacts:
     - name: reason_for_canceling
       type: text
   pk: [id]
+  audit_cols: [lastmodifieddate]

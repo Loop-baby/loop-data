@@ -207,3 +207,4 @@ deals:
     - name: hs_forecast_amount
       type: text
   pk: [id]
+  audit_cols: [hs_lastmodifieddate]
