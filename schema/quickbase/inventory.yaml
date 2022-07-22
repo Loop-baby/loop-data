@@ -20,6 +20,8 @@ inventory:
     type: text
   - name: cost_total
     type: text
+  - name: retail_price_new
+    type: numeric
   - name: inventory_location_inventory_location_name
     type: text
   - name: inventory_location_locality
